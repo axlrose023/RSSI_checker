@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Table</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'run/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Chart.min.css' %}">
+
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container-fluid mt-5">
+    {% block content %}{% endblock %}
+</div>
+<script src="{% static 'js/chart.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('th').click(function () {
+            var table = $(this).parents('table').eq(0);
+            var rows = table.find('tr:gt(0)').toArray().sort(comparator($(this).index()));
+            this.asc = !this.asc;
+            if (!this.asc) {
+                rows = rows.reverse();
+            }
+            for (var i = 0; i < rows.length; i++) {
+                table.append(rows[i]);
+            }
+        });
+
+        function comparator(index) {
+            return function (a, b) {
+                var valA = getCellValue(a, index);
+                var valB = getCellValue(b, index);
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+            };
+        }
+
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text();
+        }
+    });
+
+    function showSpinner(button) {
+        var spinnerId = button.id.replace("button", "spinner");
+        var textId = button.id.replace("button", "text");
+
+        var spinner = document.getElementById(spinnerId);
+        var text = document.getElementById(textId);
+
+        spinner.style.display = "inline-block";
+        text.innerText = "Refreshing...";
+
+        setTimeout(function () {
+            spinner.style.display = "none";
+            text.innerText = "Refresh Dicts";
+        }, 500000);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all the dropdown menu elements
+        var dropdownMenus = document.querySelectorAll(".dropdown-menu");
+
+        // Get all the dropdown toggle buttons
+        var dropdownButtons = document.querySelectorAll(".dropdown-toggle");
+
+        // Function to toggle a specific dropdown menu
+        function toggleDropdown(index) {
+            dropdownMenus.forEach(function (menu, i) {
+                if (i !== index) {
+                    menu.classList.remove("show");
+                }
+            });
+
+            dropdownMenus[index].classList.toggle("show");
+        }
+
+        // Event listener to show/hide the dropdown menu when the button is clicked
+        dropdownButtons.forEach(function (button, index) {
+            button.addEventListener("click", function () {
+                toggleDropdown(index);
+            });
+        });
+
+        // Event listener to hide the dropdown menus when clicking outside the menus or the buttons
+        window.addEventListener("click", function (event) {
+            if (!event.target.matches(".dropdown-toggle") && !event.target.matches(".dropdown-item")) {
+                dropdownMenus.forEach(function (menu) {
+                    menu.classList.remove("show");
+                });
+            }
+        });
+    });
+    (function () {
+        setInterval(function () {
+            location.reload();
+        }, 1200000);
+    })();
+</script>
+</body>
+</html>

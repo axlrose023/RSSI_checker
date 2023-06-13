@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'homepage' %}">Statistics</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Dropdown menu 1 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="myDropdown1" role="button"
+                           aria-haspopup="true" aria-expanded="false">
+                            Графіки
+                        </a>
+                        <div class="dropdown-menu" id="myDropdownMenu1" aria-labelledby="myDropdown1">
+                            <a class="dropdown-item" href="{% url 'chart_less' %}">T1 &lt; T2</a>
+                            <a class="dropdown-item" href="{% url 'chart_more' %}">T1 &gt; T2</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="myDropdown1" role="button"
+                           aria-haspopup="true" aria-expanded="false">
+                            Таблиці
+                        </a>
+                        <div class="dropdown-menu" id="myDropdownMenu1" aria-labelledby="myDropdown1">
+                            <a class="dropdown-item" href="{% url 'less' %}">T1 &lt; T2</a>
+                            <a class="dropdown-item" href="{% url 'more' %}">T1 &gt; T2</a>
+                        </div>
+                    </li>
+                    <!-- Dropdown menu 3 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="myDropdown3" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Таблиці Erlang
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="myDropdown3">
+                            <li><a class="dropdown-item" href="{% url 'table_erlang_less' %}">T1 < T2</a></li>
+                            <li><a class="dropdown-item" href="{% url 'table_erlang_more' %}">T1 > T2</a></li>
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu 4 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="myDropdown4" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Графіки Erlang
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="myDropdown4">
+                            <a class="dropdown-item" href="{% url 'chart_log_less' %}">T1 < T2</a>
+                            <a class="dropdown-item" href="{% url 'chart_log_more' %}">T1 > T2</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline" action="{% url 'download_excel' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <select style="cursor: pointer;" class="form-control rounded" name="host" required>
+                            <option value="">Select host</option>
+                            <option value="R407">R407</option>
+                            <option value="RNGU">RNGU</option>
+                            <option value="R401">R401</option>
+                            <option value="R403">R403</option>
+                            <option value="R301">R301</option>
+                            <option value="R502">R502</option>
+                            <option value="R508">R508</option>
+                            <option value="R514">R514</option>
+                            <option value="R403s1">R403s1</option>
+                            <option value="R405">R405</option>
+                            <option value="R415">R415</option>
+                            <option value="R420">R420</option>
+                        </select>
+                        <button class="btn btn-outline-primary mx-2 rounded" type="submit">Завантажити дані
+                            ретранслятора
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+</div>

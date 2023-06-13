@@ -1,0 +1,14 @@
+Django~=4.2.1
+influxdb_client==1.36.1
+python-dotenv==1.0.0
+psycopg2
+celery==4.4.2
+redis
+plotly~=5.14.1
+django-celery-beat
+pandas
+django-redis
+openpyxl
+django-bootstrap-v5
+django-jquery
+django-chartjs

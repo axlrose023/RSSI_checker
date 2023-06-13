@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'messages.html' %}
+    <div class="row mb-3 mx-auto">
+        <div class="col-md-4">
+            <form class="form-inline" method="GET" action="">
+                <div class="form-group mr-2">
+                    <label for="data-input" class="mx-2">Введіть дату:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control rounded mx-2" id="data-input" name="data-input"
+                               placeholder="Наприклад: YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Знайти</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-7 text-md-end">
+            <div class="mt-2" style="font-size: 18px;">
+                Дані за період: <span class="badge bg-success">{{ datetime }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mb-5">
+        <canvas id="myChart"></canvas>
+    </div>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Chart.min.css' %}">
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+
+
+    <script>
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ keys|safe }},
+                datasets: [
+                    {
+                        label: 'R401',
+                        data: {{ values|safe }},
+                        backgroundColor: '#FF6384',
+                        borderColor: '#FF6384',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R403',
+                        data: {{ values1|safe }},
+                        backgroundColor: '#36A2EB',
+                        borderColor: '#36A2EB',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R407',
+                        data: {{ values2|safe }},
+                        backgroundColor: '#FFCE56',
+                        borderColor: '#FFCE56',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R301',
+                        data: {{ values3|safe }},
+                        backgroundColor: '#4BC0C0',
+                        borderColor: '#4BC0C0',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R405',
+                        data: {{ values4|safe }},
+                        backgroundColor: '#9966FF',
+                        borderColor: '#9966FF',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R415',
+                        data: {{ values5|safe }},
+                        backgroundColor: '#FF9F40',
+                        borderColor: '#FF9F40',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R420',
+                        data: {{ values6|safe }},
+                        backgroundColor: '#23BFAA',
+                        borderColor: '#23BFAA',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R502',
+                        data: {{ values7|safe }},
+                        backgroundColor: '#FF6384',
+                        borderColor: '#FF6384',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R508',
+                        data: {{ values8|safe }},
+                        backgroundColor: '#36A2EB',
+                        borderColor: '#36A2EB',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R514',
+                        data: {{ values9|safe }},
+                        backgroundColor: '#FFCE56',
+                        borderColor: '#FFCE56',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'R403s1',
+                        data: {{ values10|safe }},
+                        backgroundColor: '#4BC0C0',
+                        borderColor: '#4BC0C0',
+                        fill: false,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'RNGU',
+                        data: {{ values11|safe }},
+                        backgroundColor: '#9966FF',
+                        borderColor: '#9966FF',
+                        fill: false,
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = (today.getMonth() + 1).toString().padStart(2, '0');
+            var day = today.getDate().toString().padStart(2, '0');
+            var formattedDate = year + '-' + month + '-' + day;
+            document.getElementById('data-input').setAttribute('placeholder', 'Наприклад: ' + formattedDate);
+
+            var input = document.getElementById('data-input');
+            input.addEventListener('input', function (e) {
+                var value = e.target.value;
+                var formattedValue = formatDateString(value);
+                e.target.value = formattedValue;
+            });
+
+            input.addEventListener('keypress', function (e) {
+                var key = e.which || e.keyCode;
+                var inputValue = String.fromCharCode(key);
+                var regex = /[0-9-]/;
+
+                if (!regex.test(inputValue) || (input.value.length >= 10 && key !== 8 && key !== 46)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            function formatDateString(value) {
+                var cleanedValue = value.replace(/[^0-9]/g, '');
+                var formattedValue = cleanedValue;
+
+                if (cleanedValue.length > 4) {
+                    formattedValue = cleanedValue.substr(0, 4) + '-' + cleanedValue.substr(4);
+                }
+                if (cleanedValue.length > 6) {
+                    formattedValue = formattedValue.substr(0, 7) + '-' + formattedValue.substr(7);
+                }
+
+                return formattedValue;
+            }
+        });
+    </script>
+
+{% endblock %}

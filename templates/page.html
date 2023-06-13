@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="table-wrapper">
+        {% include 'messages.html' %}
+        <div class="row mb-3 mx-auto">
+            <div class="col-md-4">
+                <form class="form-inline" method="GET" action="">
+                    <div class="form-group mr-2">
+                        <label for="data-input" class="mx-2">Введіть дату:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control rounded mx-2" id="data-input" name="data-input"
+                                   placeholder="Наприклад: YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Знайти</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-md-7 text-md-end">
+                <div class="mt-2" style="font-size: 18px;">
+                    Дані за період: <span class="badge bg-success">{{ datetime }}</span>
+                </div>
+            </div>
+
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>HOST</th>
+                {% for key in keys %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>R401</td>
+                {% for dict in dicts %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R403</td>
+                {% for dict in dicts1 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R407</td>
+                {% for dict in dicts2 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R301</td>
+                {% for dict in dicts3 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R405</td>
+                {% for dict in dicts4 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R415</td>
+                {% for dict in dicts5 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R420</td>
+                {% for dict in dicts6 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R502</td>
+                {% for dict in dicts7 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R508</td>
+                {% for dict in dicts8 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R514</td>
+                {% for dict in dicts9 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>R403s1</td>
+                {% for dict in dicts10 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>RNGU</td>
+                {% for dict in dicts11 %}
+                    <td>{{ dict }}</td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = (today.getMonth() + 1).toString().padStart(2, '0');
+            var day = today.getDate().toString().padStart(2, '0');
+            var formattedDate = year + '-' + month + '-' + day;
+            document.getElementById('data-input').setAttribute('placeholder', 'Наприклад: ' + formattedDate);
+
+            var input = document.getElementById('data-input');
+            input.addEventListener('input', function (e) {
+                var value = e.target.value;
+                var formattedValue = formatDateString(value);
+                e.target.value = formattedValue;
+            });
+
+            input.addEventListener('keypress', function (e) {
+                var key = e.which || e.keyCode;
+                var inputValue = String.fromCharCode(key);
+                var regex = /[0-9-]/;
+
+                if (!regex.test(inputValue) || (input.value.length >= 10 && key !== 8 && key !== 46)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            function formatDateString(value) {
+                var cleanedValue = value.replace(/[^0-9]/g, '');
+                var formattedValue = cleanedValue;
+
+                if (cleanedValue.length > 4) {
+                    formattedValue = cleanedValue.substr(0, 4) + '-' + cleanedValue.substr(4);
+                }
+                if (cleanedValue.length > 6) {
+                    formattedValue = formattedValue.substr(0, 7) + '-' + formattedValue.substr(7);
+                }
+
+                return formattedValue;
+            }
+        });
+    </script>
+{% endblock %}

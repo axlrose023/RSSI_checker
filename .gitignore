@@ -1,0 +1,6 @@
+.env
+db.sqlite3
+file.txt
+venv
+celerybeat.pid
+data.xlsx
